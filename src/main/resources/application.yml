@@ -23,13 +23,13 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create #??? table? ??? ????
+      ddl-auto: create
       naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl #??? ??? ????? ??
-      use-new-id-generator-mappings: false #false : jpa? ???? ?? ??? ??? ???? ???
-    show-sql: true # console? sql? ???
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      use-new-id-generator-mappings: false #false : jpa setting is not used. (follow DB engine's default)
+    show-sql: true # show sql in console
     properties:
-      hibernate.format_sql: true #table create?? ??? ?? ???? ?? ??? ???
+      hibernate.format_sql: true # show sql command comfortably (If false, command shown as one line)
 
   jackson:
     serialization:
