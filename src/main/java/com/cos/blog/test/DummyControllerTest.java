@@ -8,11 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,11 +20,36 @@ public class DummyControllerTest {
     @Autowired // 의존성 주입 (DI)
     private UserRepository userRepository;
 
+    //PathVariable : url 경로에 변수를 넣어주는것
+    // save 함수는 id를 전달하지 않으면 insert, 전달하면 id에 대한 데이터가 있으면 update해주고, 데이터가 없으면 insert
+    @Transactional // 함수 종료시에 자동 commit이 됨
+    @PostMapping("dummy/user/{id")
+    public User updateUser(@PathVariable int id, @RequestBody User requestUser){ //RequestBody : json 데이터를 요청 => Java Object(MessageConverter의 Jackson 라이브러리가 변환해서 받아줌)
+        System.out.println("id : "+ requestUser.getId());
+        System.out.println("password : "+ requestUser.getPassword());
+        System.out.println("email : "+ requestUser.getEmail());
+
+        User user = userRepository.findById(id).orElseThrow(() -> { // 자바는 함수를 인자로 넣을수 없어 람다로 사용
+            return new IllegalArgumentException("수정에 실패했습니다.");
+        });
+
+        user.setPassword(requestUser.getPassword());
+        user.setEmail(requestUser.getEmail());
+
+//        userRepository.save(user); // @Transactional가 있으면 save함수를 실행하지 않아도 된다.
+        // 앞으로 update 수행 시 save 하지 않고 @Transactional만 달거다. (더티 체킹)
+        // 더티체킹
+
+       return null;
+
+    }
+
+
+
     @GetMapping("/dummy/users")
     public List<User> list(){
         return userRepository.findAll();
     }
-
     //http://localhost:8000/blog/dummy/user?page=0 (page로 넘길 수 있음음)
    @GetMapping("/dummy/user")
     public List<User> pageList(@PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){// 2건식 들고오기
