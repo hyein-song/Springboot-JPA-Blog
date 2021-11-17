@@ -4,11 +4,16 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @RestController
@@ -17,15 +22,29 @@ public class DummyControllerTest {
     @Autowired // 의존성 주입 (DI)
     private UserRepository userRepository;
 
-    // {id} 주소로 파라미터를 전달 받을 수 있음
+    @GetMapping("/dummy/users")
+    public List<User> list(){
+        return userRepository.findAll();
+    }
 
+    //http://localhost:8000/blog/dummy/user?page=0 (page로 넘길 수 있음음)
+   @GetMapping("/dummy/user")
+    public List<User> pageList(@PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){// 2건식 들고오기
+        //Page<User> users = userRepository.findAll(pageable); // 밑에 pageable 설정도 같이 넘어옴
+        //List<User> users = userRepository.findAll(pageable).getContent(); // user 정보만 넘어옴
+        Page<User> pagingUser = userRepository.findAll(pageable);
+        List<User> users = pagingUser.getContent();
+        return users;
+    }
+
+    // {id} 주소로 파라미터를 전달 받을 수 있음
     @GetMapping("/dummy/user/{id}")
     public User detail(@PathVariable int id){
         // findById의 return은 Optional
         // 찾는게 없으면 프로그램에 문제가 생길 수 있다.
 
         // get : 그냥 return
-        // orElseGet:있으면 return하고 없으면 새로운 User를 생성해서 return 해라
+        // orElseGet:있으면 return하고 없으면 새로운  User를 생성해서 return 해라
         // 전부 null 리턴
 //        User user = userRepository.findById(id).orElseGet(new Supplier<User>() {
 //            @Override
