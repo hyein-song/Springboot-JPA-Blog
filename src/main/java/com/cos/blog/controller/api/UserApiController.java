@@ -22,7 +22,7 @@ public class UserApiController {
         // 실제로 insert 하고 아래에서 return
         user.setRole(RoleType.USER);
         int result = userService.회원가입(user);
-        return new ResponseDto<Integer>(HttpStatus.OK,result);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(),result);
     }
 
 }
