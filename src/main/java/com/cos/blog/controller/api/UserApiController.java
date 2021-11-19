@@ -18,8 +18,11 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HttpSession session;
+
     @PostMapping("/api/user/login")
-    public ResponseDto<Integer> login(@RequestBody User user, HttpSession session){ // spring에서는 Session을 매개변수로 받을 수 있다.
+    public ResponseDto<Integer> login(@RequestBody User user){ // spring에서는 Session을 매개변수로 받을 수 있다. // session을 매개변수로 받지 않고 변수로 할 수도 있다.
         System.out.println("UserApiController : login 호출됨");
         User principal = userService.로그인(user); // principal : 접근 주체
 
