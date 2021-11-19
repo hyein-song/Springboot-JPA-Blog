@@ -10,11 +10,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 public class UserApiController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping("/api/user/login")
+    public ResponseDto<Integer> login(@RequestBody User user, HttpSession session){ // spring에서는 Session을 매개변수로 받을 수 있다.
+        System.out.println("UserApiController : login 호출됨");
+        User principal = userService.로그인(user); // principal : 접근 주체
+
+        if(principal != null) {
+            session.setAttribute("principal",principal);
+        }
+
+        return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+
+    }
+
 
     @PostMapping("/api/user")
     public ResponseDto<Integer> save(@RequestBody User user){ // json이니까 RequestBody 써주기
