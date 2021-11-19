@@ -18,7 +18,7 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/api/user")
+    @PostMapping("/auth/joinProc")
     public ResponseDto<Integer> save(@RequestBody User user){ // json이니까 RequestBody 써주기
         System.out.println("UserApiController : save 호출됨");
         // 실제로 insert 하고 아래에서 return
