@@ -4,11 +4,15 @@ import com.cos.blog.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 
 // DAO라고 생각하면 됨
 // 자동으로 bean으로 등록이 된다. @Repository 생략 가능
 public interface UserRepository extends JpaRepository<User, Integer> { //User 테이블이 관리하는 reposotory이고 PK는 Integer 타입
-
+    
+    // 네이밍 쿼리
+    Optional<User> findByUsername(String username);
 
 
 }
