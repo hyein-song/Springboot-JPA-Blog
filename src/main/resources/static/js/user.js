@@ -3,6 +3,9 @@ let index = {
         $("#btn-save").on("click",()=>{ // function(){} 를 ()=> {} 로 사용하는건 this를 바인딩하기 위해서
             this.save();
         });
+        $("#btn-update").on("click",()=>{
+            this.update();
+        });
         // $("#btn-login").on("click",()=>{ // function(){} 를 ()=> {} 로 사용하는건 this를 바인딩하기 위해서
         //     this.login();
         // });
@@ -37,7 +40,28 @@ let index = {
         // 1. 웹프로그램을 사용하든지 앱 프로그램을 사용하든지 서버를 하나만 쓰기 위해
         // 2. 비동기 통신을 하기 위해서
 
+    },
+
+    update:function (){
+        let data = {
+            id : $("#id").val(),
+            password : $("#password").val(),
+            email : $("#email").val()
+        }
+        $.ajax({
+            type :"PUT",
+            url:"/user",
+            data:JSON.stringify(data),
+            contentType:"application/json; charset=utf-8",
+            dataType : "json"
+        }).done(function (resp){
+            alert("회원수정이 완료 되었습니다.");
+            location.href="/";
+        }).fail(function (error){
+            alert(JSON.stringify(error));
+        });
     }
+
 
     // login:function (){
     //     let data = {
