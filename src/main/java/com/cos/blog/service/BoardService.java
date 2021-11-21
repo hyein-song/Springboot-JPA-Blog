@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.backoff.BackOff;
 
 import java.util.List;
 
@@ -39,6 +40,19 @@ public class BoardService {
     @Transactional
     public void 글삭제하기(int id){
          boardRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void 글수정하기(int id, Board requestBoard){
+        //수정하려면 영속화를 시켜야됨
+        Board board = boardRepository.findById(id).orElseThrow(()->{
+            return new IllegalArgumentException("글 찾기 실패 : 아이디를 찾을 수 없습니다.");
+        }); // 영속화 완료
+
+        board.setTitle(requestBoard.getTitle());
+        board.setContent(requestBoard.getContent());
+        // 해당 함수 종료 시 (Service가 종료될떼) 트랜잭션 종료된다. 이때 더티체킹이되서 자동업데이트가 됨 flush
+
     }
 
 }
