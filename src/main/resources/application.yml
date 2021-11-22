@@ -34,3 +34,6 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+cos:
+  key: cos1234 #정말 중요한 키여서 절대 노출되면 안된다.
