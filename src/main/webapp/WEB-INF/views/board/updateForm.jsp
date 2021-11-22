@@ -3,22 +3,18 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
-    <div class="container">
-        <form>
-            <input tupe="hidden" id="id" value="${board.id}"/>
-            <div class="form-group">
-                <input value="${board.title}" type="text" class="form-control" placeholder="Enter title" id="title">
-            </div>
+    <input type="hidden" id="id" value="${board.id}"/>
+    <form>
+        <div class="form-group">
+            <input value="${board.title}" type="text" class="form-control" placeholder="Enter title" id="title">
+        </div>
 
-            <div class="form-group">
-                <textarea class="form-control summernote" rows="5" id="content">${board.content}</textarea>
-            </div>
+        <div class="form-group">
+            <textarea class="form-control summernote" rows="5" id="content">${board.content}</textarea>
+        </div>
 
-
-        </form>
-        <button id="btn-update" class="btn btn-primary">글수정 완료</button> <%--json으로 요청을 할거여서 form 밖으로 뺌--%>
-
-    </div>
+    </form>
+    <button id="btn-update" class="btn btn-primary">글수정 완료</button> <%--json으로 요청을 할거여서 form 밖으로 뺌--%>
 
 </div>
 

@@ -1,5 +1,6 @@
 package com.cos.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,8 +39,10 @@ public class Board {
     // Joincoumn은 FK설정을 해주는거라서 필요 없고 그냥 join 해서 넣어달라는 의미
     // mappedBy : 나는 연관관계의 주인이 아니다. 난 FK가 아니에요. DB에 컬럼을 만들지 마라.
     // 테이블에 생성되는 FK가 아니다.
-    @OneToMany(mappedBy = "board",fetch = FetchType.EAGER) // 하나의 게시글은 여러개의 답변을 가질 수 있음 / Reply table에 있는 board를 넣어줌
-    private List<Reply> reply; // 게시글에 답변이 여러개이므로 List
+    @OneToMany(mappedBy = "board",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) // 하나의 게시글은 여러개의 답변을 가질 수 있음 / Reply table에 있는 board를 넣어줌
+    @JsonIgnoreProperties({"board"}) // 무한참조 방지
+    @OrderBy("id desc")
+    private List<Reply> replies; // 게시글에 답변이 여러개이므로 List
 
     @CreationTimestamp
     private Timestamp createDate;
